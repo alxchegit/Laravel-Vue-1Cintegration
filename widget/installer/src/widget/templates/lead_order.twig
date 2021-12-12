@@ -1,0 +1,289 @@
+{% if template is defined %}
+    {% set isSaved = fields.isSaved is defined ? fields.isSaved : false %}
+<div class="amoai-td_lfb-lead_order_modal_wrapper template_{{ template }}">
+    <div class="amoai-td_lfb-lead_order_modal-header">
+        <div class="amoai-td_lfb-modal_header_title">
+            {% if  template == 'order' %}
+                {% if fields.is_new %}
+                    <h2><span>Новый заказ</span></h2>
+                {% else %}
+                    <h2><span class="">Заказ №</span> {{ fields.order_number }} <span>от</span> {{ fields.order_date }}</h2>
+                {% endif %}
+            {% else %}
+                <h2>
+                    <span>Реализация №</span> {{ fields.order_number }} <span>от</span> {{ fields.order_date }}</h2>
+            {% endif %}
+        </div>
+        <div class="amoai-td_lfb-modal_header_action_buttons">
+            {{ self.render(
+                {ref: '/tmpl/controls/button.twig'},
+                {
+                    text: 'Отмена',
+                    id: 'cancelOrder',
+                }
+            ) }}
+            {% if  template == 'order'%}
+                {{ self.render(
+                    {ref: '/tmpl/controls/button.twig'},
+                    {
+                        text: 'Сохранить и отправить в 1С',
+                        id: 'saveAndSendOrder',
+                        blue: true
+                    }
+                ) }}
+            {% else %}
+                {{ self.render(
+                    {ref: '/tmpl/controls/button.twig'},
+                    {
+                        text: 'Заказ',
+                        id: 'showOrderForm',
+                        blue: true
+                    }
+                ) }}
+            {% endif %}
+            {% if  template == 'order' %}
+                {% set classss = isSaved ? '' : 'hidden' %}
+                {{ self.render(
+                    {ref: '/tmpl/controls/button.twig'},
+                    {
+                        text: 'Реализация',
+                        id: 'makeRealization',
+                        class_name: classss
+                    }
+                ) }}
+            {% endif %}
+        </div>
+    </div>
+    <div class="amoai-td_lfb-lead_order_modal-main_section">
+        {# Настройки заказа #}
+        <div class="amoai-td_lfb-box_container">
+            <div class="amoai-td_lfb-box amoai-tdLfb-legal_box">
+                <div class="amoai-td_lfb-group_field">
+                    <div class="amoai-td_lfb-field_label">
+                        <span>Юр. лицо</span>
+                    </div>
+                    <div class="amoai-td_lfb-field_value">
+                        {{ self.render({ ref: '/tmpl/controls/select.twig' }, {
+                            name: 'yurcomp',
+                            items: fields.yurcomp.items,
+                            selected: fields.yurcomp.selected
+                        }) }}
+                    </div>
+                </div>
+                <div class="amoai-td_lfb-group_field">
+                    <div class="amoai-td_lfb-field_label">
+                        <span>Контрагент</span>
+                    </div>
+                    <div class="amoai-td_lfb-field_value">
+                        <input name="kontragent_name"
+                               class=" text-input"
+                               type="text"
+                               readonly="readonly"
+                               value="{{ fields.kontragent.option|e('html_attr') }}" >
+                        <input type="hidden"
+                            name="kontragent_id"
+                               readonly="readonly"
+                            value="{{ fields.kontragent.id }}">
+
+                    </div>
+                </div>
+                <div class="amoai-td_lfb-group_field">
+                    <div class="amoai-td_lfb-field_label">
+                        <span>Грузополучатель</span>
+                    </div>
+                    {% set className = template == 'order' ? 'js-amoai-td_lfb-gruzopoluchatel_select' : '' %}
+                    <div class="amoai-td_lfb-field_value">
+                        {{ self.render({ ref: '/tmpl/controls/select.twig' }, {
+                            name: 'gruzopoluchatel',
+                            class_name: className,
+                            items: fields.gruzopoluchatel.items,
+                            selected: fields.gruzopoluchatel.selected
+                        }) }}
+                    </div>
+                </div>
+            </div>
+            <div class="amoai-td_lfb-box amoai-td_lfb-deal_box">
+                <div class="amoai-td_lfb-group_field">
+                    <div class="amoai-td_lfb-field_label">
+                        <span>Договор</span>
+                    </div>
+                    <div class="amoai-td_lfb-field_value">
+                        <input type="text"
+                               placeholder="..."
+                               name="dogovor_name"
+                               readonly="readonly"
+                                value="{{ fields.dogovor.items.0.option|e('html_attr') }}">
+                        <input type="hidden"
+                                name="dogovor_id"
+                                value="{{ fields.dogovor.items.0.id }}">
+                    </div>
+                </div>
+                <div class="amoai-td_lfb-group_field">
+                    <div class="amoai-td_lfb-field_label">
+                        <span>Соглашение</span>
+                    </div>
+                    <div class="amoai-td_lfb-field_value">
+                        {% set soglash_disabled = template == 'realization' %}
+                        {{ self.render({ ref: '/tmpl/controls/select.twig' }, {
+                            name: 'soglash',
+                            items: fields.soglash.items,
+                            selected: fields.soglash.selected,
+                            disabled: soglash_disabled
+                        }) }}
+                    </div>
+                </div>
+                <div class="amoai-td_lfb-group_field">
+                    <div class="amoai-td_lfb-field_label">
+                        <span>Склад</span>
+                    </div>
+                    <div class="amoai-td_lfb-field_value">
+                        {% set sklad_disabled = template == 'realization' %}
+                        {{ self.render({ ref: '/tmpl/controls/select.twig' }, {
+                            name: 'sklad',
+                            items: fields.sklad.items,
+                            selected: fields.sklad.selected,
+                            disabled: sklad_disabled
+                        }) }}
+                    </div>
+                </div>
+            </div>
+            <div class="amoai-td_lfb-box amoai-td_lfb-delivery_box">
+                <div class="amoai-td_lfb-group_field">
+                    <div class="amoai-td_lfb-field_label">
+                        <span>Способ доставки</span>
+                    </div>
+                    <div class="amoai-td_lfb-field_value">
+                        {% set sposdost_disabled = template == 'realization' %}
+                        {{ self.render({ ref: '/tmpl/controls/select.twig' }, {
+                            name: 'sposdost',
+                            button_class_name: 'amoai-td_lfb-select_sposdost',
+                            items: fields.sposdost.items,
+                            selected: fields.sposdost.selected,
+                            disabled: sposdost_disabled
+                        }) }}
+                    </div>
+                </div>
+                <div class="amoai-td_lfb-group_field">
+                    <div class="amoai-td_lfb-field_label">
+                        <span>Дата доставки</span>
+                    </div>
+                    <div class="amoai-td_lfb-field_value">
+                        <span class="date_field_wrapper js-control-date ">
+                            <input class="date_field empty"
+                                   name="datadost"
+                                   type="text"
+                                   maxlength="10"
+                                   value="{{ fields.datadost }}"
+                                   placeholder="Выберите дату"
+                                   from="calendar"
+                                   autocomplete="off"
+                                   style="padding-left: 28px; width: 184px;">
+                            <div class="date_field_wrapper--calendar">
+                                <svg class="svg-card-calendar-dims"><use xlink:href="#card-calendar"></use>
+                                </svg>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+                {% if template == 'order' %}
+
+                    <div class="amoai-td_lfb-group_field">
+                        <div class="amoai-td_lfb-field_label">
+                            <span>Время доставки</span>
+                        </div>
+                        <div class="amoai-td_lfb-field_value">
+                            <span class="date_field_wrapper js-control-date-time " style="margin-bottom: 10px;">
+                                <input class="date_field date_field_with-time empty"
+                                       type="text"
+                                       maxlength="16"
+                                       name="vremdost_from"
+                                       value="{{ fields.vremdost_from }}"
+                                       placeholder="От"
+                                       autocomplete="off"
+                                       style="padding-left: 28px; width: 184px;">
+                            <div class="date_field_wrapper--calendar">
+                                <svg class="svg-card-calendar-dims"><use xlink:href="#card-calendar"></use></svg>
+                            </div>
+                            </span>
+                            <span class="date_field_wrapper js-control-date-time ">
+                                <input class="date_field date_field_with-time empty"
+                                       type="text"
+                                       maxlength="16"
+                                       name="vremdost_to"
+                                       value="{{ fields.vremdost_to }}"
+                                       placeholder="До"
+                                       autocomplete="off"
+                                       style="padding-left: 28px; width: 184px;">
+                            <div class="date_field_wrapper--calendar">
+                                <svg class="svg-card-calendar-dims"><use xlink:href="#card-calendar"></use></svg>
+                            </div>
+                            </span>
+                        </div>
+                    </div>
+
+                {% endif %}
+            </div>
+        </div>
+        {# Перечень товаров #}
+        <div class="amoai-td_lfb-items_container">
+            <table class="amoai-td_lfb-items_table ">
+                <thead>
+                <tr>
+                    <th style="width: 35px;">№</th>
+                    <th style="width: 200px;">Артикул</th>
+                    <th style="width: 305px;">Номенклатура</th>
+                    <th style="width: 60px;">Ед.</th>
+                    <th style="width: 85px;">К-во</th>
+                    {% if template == 'order' %}
+                        <th style="width: 85px;">Св. ост</th>
+                    {% endif %}
+                    <th style="width: 100px;">Сумма</th>
+                    <th style="width: 50px;">Ставка НДС</th>
+                    <th style="width: 85px;">НДС</th>
+                    <th style="width: 100px;">Сумма с НДС</th>
+                    {% if template == 'order' %}
+                        <th class="amoai-td_lfb-delete_column" style="width: 40px;"></th>
+                        <th>Отменено по причине</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody class="amoai-td_lfb-items_table_body js-amoai-td_lfb-saved_items">
+                    {% include "templates/items_row.twig" %}
+                </tbody>
+            </table>
+            {% if template == 'order' %}
+                {{ self.render(
+                    {ref: '/tmpl/controls/button.twig'},
+                    {
+                        text: 'Добавить позицию',
+                        id: 'addItem',
+                        class_name: 'amoai-td_lfb-add_item_button'
+                    }
+                ) }}
+            {%  endif %}
+        </div>
+    </div>
+    {# FOOTER #}
+    <div class="amoai-td_lfb-lead_order_modal-footer">
+        <div class="amoai-td_lfb-footer_row">
+            <div class="amoai-td_lfb-saved_document">
+                <button type="button"
+                        class="button-input    "
+                        data-type="{{ template }}"
+                        id="saveDocument">
+                    <span class="button-input-inner ">
+                        <span class="button-input-inner__text">Сохранить документ</span>
+                    </span>
+                </button>
+            </div>
+            <div class="amoai-td_lfb-order_summ">
+                <p>Скидка: <span class="js-amoai-td_lfb-total_sale">{{ fields.skidka }}</span></p>
+                <p>НДС: <span class="js-amoai-td_lfb-total_vat">{{ fields.total_vat }}</span> р.</p>
+                <p>Заказано с НДС: <span class="js-amoai-td_lfb-total_summvat">{{ fields.amount }}</span> р.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+    <h2>Форма не определена</h2>
+{% endif %}

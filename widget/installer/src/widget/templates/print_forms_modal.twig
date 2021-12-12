@@ -1,0 +1,21 @@
+<div class="amoai-td_lfb-print_forms_wrapper">
+    <h2>Печатные формы</h2>
+    <div class="amoai-td_lfb-forms_list_holder custom-scroll">
+        {% for form in forms %}
+            <div class="form_item">
+                <div class="form_item_title">{{ form.name }}</div>
+                <div class="form_doc_types_holder">
+                    {% for format in formats %}
+                        <div class="doc_type_item js-amoai-td_lfb-download_form"
+                            data-form-id="{{ form.id }}"
+                            data-doc-id="{{ format.id }}"
+                        >
+                            <a target="_blank"
+                               href="{{ url }}?doc_type={{ form.doc_type }}&doc_id={{ id }}&print_form_id={{ form.id }}&file_ext={{ format.id }}">{{ format.name }}</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {%  endfor %}
+    </div>
+</div>

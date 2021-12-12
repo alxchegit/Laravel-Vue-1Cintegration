@@ -1,0 +1,9 @@
+define([], function () {
+    return {
+        urlForC: '',
+        logForC: '',
+        passForC: '',
+        schemaForC: 'https',
+        urlApi: 'https://c.ru',
+    }
+})

@@ -1,0 +1,25 @@
+{% if is_new_order %}
+<div class="linked-form__field">
+    <button type="button" class="button-input amoai-td_lfb-integration_order_tab">Создать заказ</button>
+</div>
+{% endif %}
+{% if order %}
+    <div class="linked-form__field">
+        <div class="linked-form__field__label">
+            <span>{{ order_info}}</span>
+        </div>
+        <div class="linked-form__field__value">
+            <button  type="button"  class="button-input">Открыть</button>
+        </div>
+    </div>
+{% endif %}
+{% if realization %}
+    <div class="linked-form__field">
+        <div class="linked-form__field__label">
+            <span>{{ realization_info }}</span>
+        </div>
+        <div class="linked-form__field__value">
+            <button  type="button"  class="button-input">Открыть</button>
+        </div>
+    </div>
+{% endif %}

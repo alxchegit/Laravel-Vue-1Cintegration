@@ -1,0 +1,9 @@
+{% if products is defined %}
+    {% for product in products %}
+        <tr data-product-id="{{ product.id }}"
+            class="js-amoai-td_lfb-choose_product">
+            <td style="width: 70%;">{{ product.name }}</td>
+            <td style="width: 30%;">{{ product.art }}</td>
+        </tr>
+    {% endfor %}
+{% endif %}

@@ -1,0 +1,142 @@
+{% set article = item.article ? item.article : '' %}
+{% set prod_id = item.prod_id ? item.prod_id : '' %}
+{% set group_id = item.parent_id ? item.parent_id : '' %}
+{% set nomenclature = item.nomenclature ? item.nomenclature : '' %}
+{% set quantitynom = item.quantitynom is defined ? item.quantitynom : '' %}
+{% set free = item.free is defined ? item.free : '' %}
+{% set summnom = item.summnom is defined ? item.summnom : '' %}
+{% set base_summnom = item.base_summnom ? item.base_summnom : '' %}
+{% set vatrate = item.vatrate is defined ? item.vatrate : '' %}
+{% set vat = item.vat is defined ? item.vat : '' %}
+{% set base_vat = item.base_vat is defined ? item.base_vat : '' %}
+{% set summvat = item.summvat is defined ? item.summvat : '' %}
+{% set base_summvat = item.base_summvat is defined ? item.base_summvat : '' %}
+{% set reason_canceled = item.reason_canceled ? item.reason_canceled : '' %}
+{% set edinica = item.edinica ? item.edinica : '' %}
+{% set price = item.price is defined ? item.price : '' %}
+{% set canceled = item.canceled is defined ? item.canceled : false %}
+{% set nds_included = item.nds_included is defined ? item.nds_included : true %}
+<tr>
+    <td style="text-align: center;" class="js-amoai-td_lfb-row_count"></td>
+    <td class="amoai-td_lfb-items_input_field amoai-td_lfb-items-article">
+        <input type="text"
+               placeholder="..."
+               readonly
+               class="amoai-td_lfb-input_value {% if template == 'order' %}js-amoai-td_lfb-article_search{% endif %}"
+               data-field-type="article"
+               data-field-hash=""
+               data-product-id=""
+               value="{{ article }}"
+               title="{{ article }}"
+               name="article">
+        <input type="hidden"
+                name="prod_id"
+                value="{{ prod_id }}">
+        <input type="hidden"
+                name="group_id"
+                value="{{ group_id }}">
+    </td>
+    <td class="amoai-td_lfb-items_input_field amoai-td_lfb-items-nomenclature">
+        <input type="text"
+               placeholder="..."
+               readonly
+               class="amoai-td_lfb-input_value {% if template == 'order' %}js-amoai-td_lfb-article_search{% endif %}"
+               data-field-type="nomenclature"
+               data-field-hash=""
+               data-product-id=""
+               value="{{ nomenclature|escape  }}"
+               title="{{ nomenclature|escape  }}"
+               name="nomenclature">
+    </td>
+    <td>
+        <input type="text"
+               disabled
+               class="amoai-td_lfb-input_value edinica"
+               value="{{ edinica }}"
+               name="edinica">
+    </td>
+    <td>
+        <input
+                {% if template == 'order' %}
+                type="number"
+                {%  else %}
+                    type="text"
+                    readonly
+                {%  endif %}
+               class="amoai-td_lfb-input_value quantitynom {% if  template == 'order' %} js-amoai-td_lfb-input_quantitynom_change {% endif %}"
+               step="1"
+               min="1"
+               value="{{ quantitynom }}"
+               name="quantitynom">
+    </td>
+    {% if template == 'order' %}
+        <td>
+            <input type="number"
+                   disabled
+                   class="amoai-td_lfb-input_value free"
+                   value="{{ free }}"
+                   name="free">
+        </td>
+    {%  endif %}
+    <td>
+        <input type="text"
+               disabled
+               class="amoai-td_lfb-input_value summnom"
+               value="{{ summnom }}"
+               name="summnom">
+        <input type="hidden"
+            name="base_summnom"
+               value="{{ price }}"
+            >
+    </td>
+    <td>
+        <input type="text"
+               disabled
+               class="amoai-td_lfb-input_value vatrate"
+               value="{{ vatrate }}"
+               name="vatrate">
+        <input type="hidden"
+                value="{{ nds_included }}"
+                name="nds_included">
+    </td>
+    <td>
+        <input type="text"
+               disabled
+               class="amoai-td_lfb-input_value vat"
+               value="{{ vat }}"
+               name="vat">
+        <input type="hidden"
+               name="base_vat"
+               value="{{ base_vat }}"
+               >
+    </td>
+    <td>
+        <input type="text"
+               disabled
+               class="amoai-td_lfb-input_value summvat"
+               value="{{ summvat }}"
+               name="summvat">
+        <input type="hidden"
+               name="base_summvat"
+               value="{{ base_summvat }}"
+               >
+    </td>
+    {% if template == 'order' %}
+        <td>
+            {% if  template == 'order' %}
+            <div class="amoai-td_lfb-items_remove_holder js-amoai-td_lfb-items_remove">
+                <span class="icon icon-delete-trash"></span>
+            </div>
+            {% endif %}
+        </td>
+        <td>
+            {% if canceled %}
+            <input type="text"
+                   disabled
+                   class="amoai-td_lfb-input_value reason"
+                   value="{{ reason_canceled }}"
+                   name="reason">
+            {% endif %}
+        </td>
+    {% endif %}
+</tr>

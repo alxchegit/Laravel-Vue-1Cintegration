@@ -1,0 +1,7 @@
+{% if items is defined %}
+    {% for item in items %}
+        {% include "templates/initial_items_row.twig" %}
+    {% endfor %}
+{% else %}
+    {% include "templates/initial_items_row.twig" %}
+{% endif %}

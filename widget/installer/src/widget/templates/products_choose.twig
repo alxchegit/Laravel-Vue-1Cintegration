@@ -1,0 +1,80 @@
+<div class="amoai-td_lfb-products_choose_container">
+    <input type="hidden" value="{{ hash }}" name="HASH">
+    <input type="hidden" value="{{ field_type }}" name="FIELDTYPE">
+    <div class="amoai-td_lfb-header">
+        <h2>Номенклатура</h2>
+        <div class="amoai-td_lfb-row">
+            {{ self.render({ ref: '/tmpl/controls/input.twig' }, {
+                name: 'prod_search',
+                placeholder: 'Поиск',
+                class_name: 'amoai-td_lfb-products_search_input js-amoai-td_lfb-products_search'
+            }) }}
+            {{ self.render(
+                { ref: '/tmpl/controls/checkbox.twig' },
+                {
+                    name: 'prod_hierarchy',
+                    class_name: 'amoai-td_lfb-prod_hierarchy_checkbox-wrapper',
+                    input_class_name: 'js-amoai-td_lfb-prod_hierarchy_checkbox',
+                    text: 'Иерархия номенклатуры',
+                }) }}
+        </div>
+    </div>
+    <div class="amoai-td_lfb-body">
+        <div class="amoai-td_lfb-left_sidebar js-amoai-td_lfb-groups_list custom-scroll">
+            <ul>
+                {% if prod_groups is defined %}
+                    {% for group in prod_groups %}
+                        <li data-group-id="{{ group.id }}"
+                            class="amoai-td_lfb-group_item js-amoai-td_lfb-pick_group {% if group.child is defined %} list-with-child {% endif %}"
+                            title="{{ group.name }}">
+                            <span> {{ group.name }}</span>
+
+                            {% if group.child is defined %}
+                                <ul class="amoai-td_lfb-ul_with_child">
+                                    {% for child in group.child %}
+                                        <li data-group-id="{{ child.id }}"
+                                            class="amoai-td_lfb-group_item js-amoai-td_lfb-pick_group {% if child.child is defined %} list-with-child {% endif %}"
+                                            title="{{ child.name }}">
+                                            <span>{{ child.name }}</span>
+
+                                            {% if child.child is defined %}
+                                                <ul class="amoai-td_lfb-ul_with_child">
+                                                    {% for child in child.child %}
+                                                        <li data-group-id="{{ child.id }}"
+                                                            class="amoai-td_lfb-group_item js-amoai-td_lfb-pick_group"
+                                                            title="{{ child.name }}">
+                                                            <span>{{ child.name }}</span>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+        <div class="amoai-td_lfb-main_content ">
+            <div class="table-header">
+                <table style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th style="width: 67%;">Наименование</th>
+                            <th style="width: 30%;">Артикул</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="table-body custom-scroll">
+                <table style="width: 100%;">
+                    <tbody class="js-amoai-td_lfb-products_container">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
