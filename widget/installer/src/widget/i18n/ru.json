@@ -1,0 +1,10 @@
+{
+    "widget":{
+        "name":"Модуль платежей",
+        "short_description":"Модуль платежей",
+        "description":" "
+    },
+    "settings":{
+        "phone":"Телефон"
+    }
+}
